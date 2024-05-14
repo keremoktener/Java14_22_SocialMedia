@@ -12,6 +12,6 @@ spring:
 
 authservice:
   secret:
-    secret key: ${JAVA14_AUTH_SECRET_KEY}
-    issuer: ${JAVA14_AUTH_ISSUER}
+    secret key: ${JAVA14_SECRET_KEY}
+    issuer: ${JAVA14_ISSUER}
 # docker run --name java14MongoDB -d -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=root mongo:jammy

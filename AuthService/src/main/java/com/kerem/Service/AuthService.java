@@ -17,6 +17,7 @@ import com.kerem.exceptions.AuthMicroServiceException;
 import com.kerem.exceptions.ErrorType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -39,13 +40,15 @@ public class AuthService {
         auth.setActivationCode(CodeGenerator.generateCode());
         authRepository.save(auth);
 
-        UserProfileSaveRequestDto userProfileSaveRequestDto = UserProfileSaveRequestDto.builder()
-                .authId(auth.getId())
-                .username(dto.getUsername())
-                .email(dto.getEmail())
-                .build();
+//        UserProfileSaveRequestDto userProfileSaveRequestDto = UserProfileSaveRequestDto.builder()
+//                .authId(auth.getId())
+//                .username(dto.getUsername())
+//                .email(dto.getEmail())
+//                .build();
 
-        userProfileManager.save(userProfileSaveRequestDto);
+
+
+        userProfileManager.save(AuthMapper.INSTANCE.toDto(auth));
 
         return AuthMapper.INSTANCE.authToAuthRegisterResponseDto(auth);
     }
@@ -66,6 +69,26 @@ public class AuthService {
 
     }
 
+//    public String activateAccount(ActivateCodeRequestDto dto) {
+//        Auth auth = authRepository.findById(dto.getId())
+//                .orElseThrow(() -> new AuthMicroServiceException(ErrorType.USER_NOT_FOUND));
+//        if (auth.getStatus().equals(Status.PENDING)) {
+//            if (!auth.getActivationCode().equals(dto.getCode())) {
+//                throw new AuthMicroServiceException(ErrorType.ACTIVATION_CODE_NOT_FOUND);
+//            }
+//            auth.setStatus(Status.ACTIVE);
+//            authRepository.save(auth);
+//            return jwtTokenManager.createToken(auth.getId()).get();
+//        } else if (auth.getStatus().equals(Status.ACTIVE)) {
+//            throw new AuthMicroServiceException(ErrorType.USER_ALREADY_ACTIVE);
+//        } else if (auth.getStatus().equals(Status.BANNED)) {
+//            throw new AuthMicroServiceException(ErrorType.USER_IS_BANNED);
+//        } else {
+//            throw new AuthMicroServiceException(ErrorType.USER_DELETED);
+//        }
+//    }
+
+    @Transactional
     public String activateAccount(ActivateCodeRequestDto dto) {
         Auth auth = authRepository.findById(dto.getId())
                 .orElseThrow(() -> new AuthMicroServiceException(ErrorType.USER_NOT_FOUND));
@@ -75,6 +98,13 @@ public class AuthService {
             }
             auth.setStatus(Status.ACTIVE);
             authRepository.save(auth);
+
+            try {
+                userProfileManager.activateUserProfile(auth.getId());
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to activate user profile", e);
+            }
+
             return jwtTokenManager.createToken(auth.getId()).get();
         } else if (auth.getStatus().equals(Status.ACTIVE)) {
             throw new AuthMicroServiceException(ErrorType.USER_ALREADY_ACTIVE);
@@ -85,12 +115,18 @@ public class AuthService {
         }
     }
 
+    @Transactional
     public String softDelete(Long authId) {
         Auth auth = authRepository.findById(authId)
                 .orElseThrow(() -> new AuthMicroServiceException(ErrorType.USER_NOT_FOUND));
         if (!auth.getStatus().equals(Status.DELETED)) {
             auth.setStatus(Status.DELETED);
             authRepository.save(auth);
+            try {
+                userProfileManager.softDeleteUserProfile(authId);
+            } catch (Exception e){
+                throw new AuthMicroServiceException(ErrorType.BAD_REQUEST);
+            }
             return "User with id " + authId + " has been deleted";
         } else {
             throw new AuthMicroServiceException(ErrorType.USER_ALREADY_DELETED);

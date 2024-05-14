@@ -2,13 +2,11 @@ package com.kerem.Controller;
 
 import com.kerem.Constant.EndPoints;
 import com.kerem.Dto.Request.UserProfileSaveRequestDto;
+import com.kerem.Dto.Request.UserProfileUpdateRequestDto;
 import com.kerem.Service.UserProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(EndPoints.ROOT + EndPoints.USERPROFILE)
@@ -21,4 +19,24 @@ public class UserProfileController {
         userProfileService.save(dto);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/activate/{authId}")
+    public ResponseEntity<Void> activateUserProfile(@PathVariable("authId") Long authId) {
+        userProfileService.activateUserProfile(authId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Void> updateUserProfile(String token, @RequestBody UserProfileUpdateRequestDto dto) {
+        userProfileService.updateUserProfile(token, dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(EndPoints.DELETE + "/{authId}")
+    public ResponseEntity<Void> softDeleteUserProfile(@PathVariable("authId") Long authId){
+        userProfileService.softDeleteUserProfile(authId);
+        return ResponseEntity.ok().build();
+    }
+
+
 }
