@@ -1,0 +1,33 @@
+1 - @Controller ve @RestController arasındaki fark nedir? \
+@Controller ve @RestController arasındaki temel fark, @RestController'ın @ResponseBody anotasyonunu otomatik olarak eklemesidir. Bu iki anotasyon, Spring MVC'de kullanılır ve bir sınıfın bir web controller olarak nasıl davranacağını belirler.  @Controller anotasyonu, bir sınıfın bir Spring MVC Controller olduğunu belirtir. Bu anotasyon, genellikle bir web uygulamasının kullanıcı arayüzünü oluşturmak için kullanılır. @Controller anotasyonuna sahip bir sınıftaki metodlar, genellikle bir view ismi döndürür ve bu view, kullanıcıya gösterilir.  @RestController anotasyonu ise, @Controller ve @ResponseBody anotasyonlarının birleşimidir. @RestController anotasyonuna sahip bir sınıftaki metodlar, genellikle bir HTTP yanıtı olarak bir nesne döndürür ve bu nesne, HTTP yanıtının gövdesi olarak kullanılır. Bu anotasyon, genellikle RESTful web servislerini oluşturmak için kullanılır.  Özetle, @Controller genellikle view tabanlı MVC uygulamalarında kullanılırken, @RestController genellikle RESTful servislerde kullanılır.
+
+2 - spring boot uygulaması ayağa kalkarken neler oluyor adım adım \
+- Spring Boot uygulaması ayağa kalkarken aşağıdaki adımlar gerçekleşir:  
+- Uygulamanın başlatılması: Spring Boot uygulaması, genellikle main metodunda SpringApplication.run() metodunu çağırarak başlatılır. Bu metod, Spring uygulama bağlamını başlatır ve uygulamanın başlamasını sağlar.  
+- Yapılandırma dosyalarının okunması: Spring Boot, application.properties veya application.yml gibi yapılandırma dosyalarını okur. Bu dosyalar, uygulamanın yapılandırma ayarlarını içerir.  
+- Otomatik yapılandırma: Spring Boot, otomatik yapılandırma özelliği sayesinde, uygulamanın ihtiyaç duyduğu çoğu bean'i otomatik olarak oluşturur. Bu, veritabanı bağlantıları, güvenlik yapılandırmaları, web sunucusu ayarları gibi birçok ayarı içerir.  
+- Component taraması: Spring Boot, @Component, @Service, @Repository, @Controller gibi anotasyonlara sahip sınıfları bulmak için belirtilen paketleri tarar. Bu sınıflar, Spring uygulama bağlamına bean olarak eklenir.  
+- Bean oluşturma: Spring, tarama sonucunda bulunan sınıflar için bean oluşturur. Bu bean'ler, uygulamanın çalışması sırasında ihtiyaç duyduğu nesnelerdir.  
+- Bağımlılıkların enjekte edilmesi: Spring, @Autowired anotasyonunu kullanarak bean'ler arasındaki bağımlılıkları otomatik olarak enjekte eder.  
+- @PostConstruct anotasyonuna sahip metodların çağrılması: Spring, bean oluşturulduktan ve bağımlılıklar enjekte edildikten sonra @PostConstruct anotasyonuna sahip metodları çağırır. Bu metodlar, genellikle bean'in başlatılması için gerekli olan ek işlemleri gerçekleştirir.  
+- Uygulamanın başlatılması: Tüm bean'ler oluşturulduktan ve yapılandırıldıktan sonra, Spring Boot uygulaması tamamen başlatılır ve kullanıma hazır hale gelir.  
+- Bu adımlar, Spring Boot uygulamasının başlatılması sırasında gerçekleşen temel işlemleri özetler. Ancak, uygulamanın özelliklerine ve yapılandırmasına bağlı olarak, ek adımlar da gerçekleşebilir.\
+
+3-RestApi yazarken nelere dikkat edilmeli? \
+RESTful API tasarlarken dikkat edilmesi gereken bazı önemli noktalar şunlardır:  
+- Kaynak Tabanlı URL'ler: RESTful API'ler, genellikle kaynak tabanlı URL'ler kullanır. Bu, URL'lerin belirli bir kaynağı veya kaynak grubunu temsil etmesi anlamına gelir. Örneğin, /users URL'si tüm kullanıcıları, /users/123 URL'si ise ID'si 123 olan kullanıcıyı temsil eder.  
+- HTTP Metodları: RESTful API'ler, HTTP metodlarını kullanarak kaynak üzerindeki işlemleri temsil eder. GET metodunu bir kaynağı almak, POST metodunu bir kaynağı oluşturmak, PUT veya PATCH metodunu bir kaynağı güncellemek ve DELETE metodunu bir kaynağı silmek için kullanabilirsiniz.  
+- Durum Kodları: HTTP yanıtının durumunu belirtmek için uygun HTTP durum kodlarını kullanın. Örneğin, bir kaynak başarıyla oluşturulduğunda 201 Created durum kodunu, bir kaynak bulunamadığında 404 Not Found durum kodunu kullanabilirsiniz.  
+- Hata Mesajları: Bir hata durumunda, yanıtın gövdesinde hata ile ilgili bilgileri içeren anlamlı bir hata mesajı döndürün. Bu, hata durumunun ne olduğunu ve nasıl çözülebileceğini belirtmelidir.  
+- Veri Formatı: API yanıtlarınızın formatını belirtin. Genellikle, RESTful API'ler JSON formatını kullanır. Ayrıca, API'nin hangi versiyonunu kullandığınızı belirtmek için URL'de veya HTTP başlıklarında bir versiyon numarası kullanabilirsiniz.  
+- Güvenlik: API'nizi güvence altına alın. Bu, API anahtarları veya OAuth gibi kimlik doğrulama mekanizmalarını kullanmayı içerebilir. Ayrıca, hassas verileri iletmek için HTTPS kullanın.  
+- Rate Limiting: API'nizi kötüye kullanımı önlemek için rate limiting uygulayın. Bu, belirli bir zaman diliminde bir kullanıcının veya IP adresinin yapabileceği maksimum istek sayısını sınırlar.  
+- Dökümantasyon: API'nizin nasıl kullanılacağını açıkça belirten ayrıntılı bir dökümantasyon sağlayın. Bu, hangi URL'lerin mevcut olduğunu, hangi HTTP metodlarının kullanılabileceğini, istek ve yanıt formatlarını ve hata mesajlarını içermelidir. \
+
+4- Richardson Maturity Model nedir? \
+Richardson Maturity Model, Leonard Richardson tarafından oluşturulan ve bir web servisinin REST prensiplerine ne kadar uyduğunu belirlemek için kullanılan bir modeldir. Bu model, bir web servisinin REST mimarisine uygunluğunu derecelendirmek için dört seviye (0'dan 3'e) tanımlar:  
+- Seviye 0: "The Swamp of POX" (Plain Old XML). Bu seviyede, HTTP protokolü sadece bir taşıma mekanizması olarak kullanılır. Tüm işlemler tek bir URL üzerinden gerçekleştirilir ve genellikle SOAP gibi bir mekanizma kullanılır.  
+- Seviye 1: "Resources". Bu seviyede, servis birden fazla URL'ye sahip olur ve her URL belirli bir kaynağı temsil eder. Ancak, hala HTTP metodları (GET, POST, PUT, DELETE vb.) tam olarak kullanılmaz.  
+- Seviye 2: "HTTP Verbs". Bu seviyede, servis HTTP metodlarını kullanır. Bu, kaynak üzerindeki işlemleri temsil etmek için GET, POST, PUT, DELETE gibi HTTP metodlarının kullanılması anlamına gelir. Ayrıca, uygun HTTP durum kodları da kullanılır.  
+- Seviye 3: "Hypermedia Controls". Bu en yüksek seviyede, servis HATEOAS (Hypermedia as the Engine of Application State) prensibini uygular. Bu, yanıtların, uygulamanın durumunu değiştirmek için kullanılabilecek hypermedia linklerini içermesi anlamına gelir.  
+Bu model, bir web servisinin REST mimarisine ne kadar uyduğunu belirlemek için kullanılır. Ancak, her servisinin 3. seviyeye ulaşması gerekmez. Uygulamanın gereksinimlerine bağlı olarak, daha düşük bir seviye yeterli olabilir.

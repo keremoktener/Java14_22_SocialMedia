@@ -1,4 +1,8 @@
 rootProject.name = 'Java14_22_SocialMedia'
 include 'AuthService'
 include 'UserProfileService'
+include 'ConfigServer'
+include 'ConfigServer'
+include 'ConfigServerGit'
+include 'PostService'
 

@@ -40,14 +40,6 @@ public class AuthService {
         auth.setActivationCode(CodeGenerator.generateCode());
         authRepository.save(auth);
 
-//        UserProfileSaveRequestDto userProfileSaveRequestDto = UserProfileSaveRequestDto.builder()
-//                .authId(auth.getId())
-//                .username(dto.getUsername())
-//                .email(dto.getEmail())
-//                .build();
-
-
-
         userProfileManager.save(AuthMapper.INSTANCE.toDto(auth));
 
         return AuthMapper.INSTANCE.authToAuthRegisterResponseDto(auth);
@@ -69,24 +61,6 @@ public class AuthService {
 
     }
 
-//    public String activateAccount(ActivateCodeRequestDto dto) {
-//        Auth auth = authRepository.findById(dto.getId())
-//                .orElseThrow(() -> new AuthMicroServiceException(ErrorType.USER_NOT_FOUND));
-//        if (auth.getStatus().equals(Status.PENDING)) {
-//            if (!auth.getActivationCode().equals(dto.getCode())) {
-//                throw new AuthMicroServiceException(ErrorType.ACTIVATION_CODE_NOT_FOUND);
-//            }
-//            auth.setStatus(Status.ACTIVE);
-//            authRepository.save(auth);
-//            return jwtTokenManager.createToken(auth.getId()).get();
-//        } else if (auth.getStatus().equals(Status.ACTIVE)) {
-//            throw new AuthMicroServiceException(ErrorType.USER_ALREADY_ACTIVE);
-//        } else if (auth.getStatus().equals(Status.BANNED)) {
-//            throw new AuthMicroServiceException(ErrorType.USER_IS_BANNED);
-//        } else {
-//            throw new AuthMicroServiceException(ErrorType.USER_DELETED);
-//        }
-//    }
 
     @Transactional
     public String activateAccount(ActivateCodeRequestDto dto) {

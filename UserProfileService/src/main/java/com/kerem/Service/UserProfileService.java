@@ -28,17 +28,6 @@ public class UserProfileService {
     private final JwtTokenManager jwtTokenManager;
 
     public void save(UserProfileSaveRequestDto dto){
-//        userProfileRepository.save(
-//                UserProfile.builder()
-//                        .authId(dto.getAuthId())
-//                        .username(dto.getUsername())
-//                        .email(dto.getEmail())
-//                        .phone(dto.getPhone())
-//                        .photo(dto.getPhoto())
-//                        .address(dto.getAddress())
-//                        .about(dto.getAbout())
-//                        .build()
-//        );
 
         UserProfile userProfile = UserProfileMapper.INSTANCE.userProfileSaveRequestDtoToUserProfile(dto);
         userProfileRepository.save(userProfile);
@@ -60,7 +49,6 @@ public class UserProfileService {
         UserProfile userProfile = userProfileRepository.findByAuthId(authId)
                 .orElseThrow(() -> new UserProfileMicroServiceException(ErrorType.KULLANICI_NOT_FOUND));
 
-
         userProfile.setEmail(dto.getEmail());
         userProfile.setPhone(dto.getPhoto());
         userProfile.setPhoto(dto.getPhoto());
@@ -77,6 +65,16 @@ public class UserProfileService {
 
         userProfile.setStatus(Status.DELETED);
         userProfileRepository.save(userProfile);
+    }
+
+    public String findIdByAuthId(Long authId){
+        Optional<UserProfile> byAuthId = userProfileRepository.findByAuthId(authId);
+        if (byAuthId.isEmpty()){
+            throw new UserProfileMicroServiceException(ErrorType.KULLANICI_NOT_FOUND);
+        } else {
+            UserProfile userProfile = byAuthId.get();
+            return userProfile.getId();
+        }
     }
 
 }

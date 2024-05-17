@@ -38,5 +38,8 @@ public class UserProfileController {
         return ResponseEntity.ok().build();
     }
 
-
+    @GetMapping(EndPoints.FINDIDBYAUTHID + "/{authId}")
+    public String findIdByAuthId(@PathVariable("authId") Long authId){
+        return userProfileService.findIdByAuthId(authId);
+    }
 }
