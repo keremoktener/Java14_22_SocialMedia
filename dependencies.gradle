@@ -12,6 +12,7 @@ ext{
             springCloudSleuth                   : "3.1.11"
     ]
 
+
     libs=[
             springBootWeb                       : "org.springframework.boot:spring-boot-starter-web:$versions.springBoot",
             springBootDataJpa                   : "org.springframework.boot:spring-boot-starter-data-jpa:$versions.springBoot",

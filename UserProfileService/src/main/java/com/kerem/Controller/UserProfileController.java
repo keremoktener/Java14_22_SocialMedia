@@ -14,17 +14,17 @@ import org.springframework.web.bind.annotation.*;
 public class UserProfileController {
     private final UserProfileService userProfileService;
 
-    @PostMapping(EndPoints.SAVE)
-    public ResponseEntity<Void> save(@RequestBody UserProfileSaveRequestDto dto){
-        userProfileService.save(dto);
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping(EndPoints.SAVE)
+//    public ResponseEntity<Void> save(@RequestBody UserProfileSaveRequestDto dto){
+//        userProfileService.save(dto);
+//        return ResponseEntity.ok().build();
+//    }
 
-    @PostMapping("/activate/{authId}")
-    public ResponseEntity<Void> activateUserProfile(@PathVariable("authId") Long authId) {
-        userProfileService.activateUserProfile(authId);
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping("/activate/{authId}")
+//    public ResponseEntity<Void> activateUserProfile(@PathVariable("authId") Long authId) {
+//        userProfileService.activateUserProfile(authId);
+//        return ResponseEntity.ok().build();
+//    }
 
     @PutMapping("/update")
     public ResponseEntity<Void> updateUserProfile(String token, @RequestBody UserProfileUpdateRequestDto dto) {

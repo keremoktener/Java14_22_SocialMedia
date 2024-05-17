@@ -1,6 +1,5 @@
 dependencies {
-    implementation libs.springBootDataJpa
-    runtimeOnly libs.postgresql
+    implementation libs.springBootDataMongo
     implementation libs.validator
     implementation libs.springCloudOpenFeign
     implementation libs.springCloudClient

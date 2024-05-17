@@ -2,6 +2,7 @@ package com.kerem.Service;
 
 import com.kerem.Constant.Role;
 import com.kerem.Constant.Status;
+import com.kerem.Controller.ProducerController;
 import com.kerem.Dto.Request.ActivateCodeRequestDto;
 import com.kerem.Dto.Request.AuthLoginRequestDto;
 import com.kerem.Dto.Request.AuthRegisterRequestDto;
@@ -27,7 +28,24 @@ public class AuthService {
     private final AuthRepository authRepository;
     private final JwtTokenManager jwtTokenManager;
     private final UserProfileManager userProfileManager;
+    private final ProducerController producerController;
 
+
+//    public AuthRegisterResponseDto save(AuthRegisterRequestDto dto) {
+//        if (!dto.getPassword().equals(dto.getRepassword())) {
+//            throw new AuthMicroServiceException(ErrorType.PASSWORDS_ARE_NOT_SAME);
+//        }
+//        if (authRepository.existsByUsername(dto.getUsername())) {
+//            throw new AuthMicroServiceException(ErrorType.USERNAME_TAKEN);
+//        }
+//        Auth auth = AuthMapper.INSTANCE.authRegisterDtoToAuth(dto);
+//        auth.setActivationCode(CodeGenerator.generateCode());
+//        authRepository.save(auth);
+//
+//        userProfileManager.save(AuthMapper.INSTANCE.toDto(auth));
+//
+//        return AuthMapper.INSTANCE.authToAuthRegisterResponseDto(auth);
+//    }
 
     public AuthRegisterResponseDto save(AuthRegisterRequestDto dto) {
         if (!dto.getPassword().equals(dto.getRepassword())) {
@@ -40,9 +58,11 @@ public class AuthService {
         auth.setActivationCode(CodeGenerator.generateCode());
         authRepository.save(auth);
 
-        userProfileManager.save(AuthMapper.INSTANCE.toDto(auth));
+        producerController.convertAndSend(dto);
 
-        return AuthMapper.INSTANCE.authToAuthRegisterResponseDto(auth);
+        return AuthMapper.INSTANCE.reqToResponse(dto);
+
+
     }
 
     public String doLogin(AuthLoginRequestDto dto) {
@@ -74,7 +94,8 @@ public class AuthService {
             authRepository.save(auth);
 
             try {
-                userProfileManager.activateUserProfile(auth.getId());
+//                userProfileManager.activateUserProfile(auth.getId());
+                producerController.activateAccountWithRabbit(auth.getId());
             } catch (Exception e) {
                 throw new RuntimeException("Failed to activate user profile", e);
             }

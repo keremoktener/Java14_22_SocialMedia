@@ -2,7 +2,7 @@ package com.kerem.Entity;
 
 import com.kerem.Constant.Role;
 import com.kerem.Constant.Status;
-import jakarta.persistence.*;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -10,8 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDateTime;
 
@@ -19,12 +19,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Data
-@Entity
-@Table(name = "tblpost")
+@Document
 public class Post {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @MongoId
+    String id;
 
     private String title;
     private String content;
@@ -33,10 +31,10 @@ public class Post {
 
     String photoUrl;
 
-    @CreationTimestamp
-    private LocalDateTime publishedOn;
+    @Builder.Default
+    private LocalDateTime publishedOn = LocalDateTime.now();
 
-    @UpdateTimestamp
+
     private LocalDateTime updatedOn;
 
 }

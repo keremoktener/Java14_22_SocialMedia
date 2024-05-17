@@ -2,15 +2,15 @@ server:
   port: 9094
 
 spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: 1234
-    url: jdbc:postgresql://localhost:5432/PostDB
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: SocialMediaPostDB
+      username: bilge
+      password: bilge!123
+
+
 
 authservice:
   secret:

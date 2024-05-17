@@ -27,20 +27,20 @@ public class UserProfileService {
     private final UserProfileRepository userProfileRepository;
     private final JwtTokenManager jwtTokenManager;
 
-    public void save(UserProfileSaveRequestDto dto){
+//    public void save(UserProfileSaveRequestDto dto){
+//
+//        UserProfile userProfile = UserProfileMapper.INSTANCE.userProfileSaveRequestDtoToUserProfile(dto);
+//        userProfileRepository.save(userProfile);
+//    }
 
-        UserProfile userProfile = UserProfileMapper.INSTANCE.userProfileSaveRequestDtoToUserProfile(dto);
-        userProfileRepository.save(userProfile);
-    }
-
-    @Transactional
-    public void activateUserProfile(Long authId) {
-        UserProfile userProfile = userProfileRepository.findByAuthId(authId)
-                .orElseThrow(() -> new UserProfileMicroServiceException(ErrorType.KULLANICI_NOT_FOUND));
-
-        userProfile.setStatus(Status.ACTIVE);
-        userProfileRepository.save(userProfile);
-    }
+//    @Transactional
+//    public void activateUserProfile(Long authId) {
+//        UserProfile userProfile = userProfileRepository.findByAuthId(authId)
+//                .orElseThrow(() -> new UserProfileMicroServiceException(ErrorType.KULLANICI_NOT_FOUND));
+//
+//        userProfile.setStatus(Status.ACTIVE);
+//        userProfileRepository.save(userProfile);
+//    }
 
     public void updateUserProfile(String token, UserProfileUpdateRequestDto dto) {
         Long authId = jwtTokenManager.getIdFromToken(token)

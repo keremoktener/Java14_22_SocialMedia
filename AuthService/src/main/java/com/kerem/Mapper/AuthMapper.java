@@ -14,12 +14,15 @@ public interface AuthMapper {
     AuthMapper INSTANCE = Mappers.getMapper(AuthMapper.class);
 
     AuthRegisterRequestDto authToAuthRegisterDto(Auth auth);
+
     Auth authRegisterDtoToAuth(AuthRegisterRequestDto authRegisterDto);
 
     AuthRegisterResponseDto authToAuthRegisterResponseDto(Auth auth);
 
     @Mapping(source = "id", target = "authId")
     UserProfileSaveRequestDto toDto(Auth auth);
+
+    AuthRegisterResponseDto reqToResponse(AuthRegisterRequestDto dto);
 //    AuthLoginResponseDto authToAuthLoginDto(Auth auth);
 //    AuthRegisterResponseDto authToAuthRegisterResponseDto(Auth auth);
 }
