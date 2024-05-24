@@ -5,5 +5,4 @@ dependencies {
     implementation libs.springCloudOpenFeign
     implementation libs.springCloudClient
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
-
 }

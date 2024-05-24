@@ -32,6 +32,4 @@ public class EndPoints {
     public static final String GETIDFROMTOKEN = "/getidfromtoken";
     public static final String GETROLEFROMTOKEN = "/getrolefromtoken";
     public static final String FINDIDBYAUTHID = "/findidbyauthid";
-
-
 }

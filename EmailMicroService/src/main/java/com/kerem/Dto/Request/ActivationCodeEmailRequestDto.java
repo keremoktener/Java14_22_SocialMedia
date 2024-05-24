@@ -1,4 +1,4 @@
-package com.kerem.Dto.Response;
+package com.kerem.Dto.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class AuthRegisterResponseDto {
-    private String username;
-    private String email;
+public class ActivationCodeEmailRequestDto {
+    private String toEmail;
+    private String activationCode;
 }

@@ -12,4 +12,6 @@ public interface AuthRepository extends JpaRepository<Auth, Long> {
 
     //aktivasyon kodu ile hesap bulma
     Optional<Auth> findByActivationCode(String code);
+
+    Optional<Auth> findByEmail(String email);
 }

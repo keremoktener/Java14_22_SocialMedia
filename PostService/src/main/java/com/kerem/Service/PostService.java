@@ -32,6 +32,7 @@ public class PostService {
         if (!postSaveRequestDto.getUserProfileId().equals(userProfileId)){
             throw new PostMicroServiceException(ErrorType.USER_NOT_FOUND);
         } else {
+            postSaveRequestDto.setUserProfileId(userProfileId);
             postRepository.save(PostMapper.INSTANCE.dtoToPost(postSaveRequestDto));
         }
     }

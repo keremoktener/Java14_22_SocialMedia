@@ -1,0 +1,26 @@
+server:
+  port: 9090
+
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: password
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: k.keremoktener@gmail.com
+    password: loev qsyi orqy pzay
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  cloud:
+      config:
+        enabled: false
+  sql:
+    init:
+      mode: never

@@ -9,6 +9,7 @@ import com.kerem.Constant.Status;
 import com.kerem.Dto.Request.UserProfileSaveRequestDto;
 import com.kerem.Dto.Request.UserProfileUpdateRequestDto;
 import com.kerem.Entity.UserProfile;
+import com.kerem.Manager.AuthManager;
 import com.kerem.Mapper.UserProfileMapper;
 import com.kerem.Repository.UserProfileRepository;
 import com.kerem.Utility.JwtTokenManager;
@@ -26,6 +27,7 @@ import java.util.Optional;
 public class UserProfileService {
     private final UserProfileRepository userProfileRepository;
     private final JwtTokenManager jwtTokenManager;
+    private final AuthManager authManager;
 
 //    public void save(UserProfileSaveRequestDto dto){
 //
@@ -50,6 +52,7 @@ public class UserProfileService {
                 .orElseThrow(() -> new UserProfileMicroServiceException(ErrorType.KULLANICI_NOT_FOUND));
 
         userProfile.setEmail(dto.getEmail());
+        authManager.updateMail(authId, dto.getEmail());
         userProfile.setPhone(dto.getPhoto());
         userProfile.setPhoto(dto.getPhoto());
         userProfile.setAddress(dto.getAddress());

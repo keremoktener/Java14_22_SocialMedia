@@ -29,5 +29,6 @@ public class EndPoints {
     public static final String CREATETOKENFROMIDANDROLE = "/createtokenfromidandrole";
     public static final String GETIDFROMTOKEN = "/getidfromtoken";
     public static final String GETROLEFROMTOKEN = "/getrolefromtoken";
-
+    public static final String FORGOTPASSWORD = "/forgotpassword";
+    public static final String RESETPASSWORD = "/resetpassword";
 }

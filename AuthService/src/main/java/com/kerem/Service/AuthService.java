@@ -3,10 +3,7 @@ package com.kerem.Service;
 import com.kerem.Constant.Role;
 import com.kerem.Constant.Status;
 import com.kerem.Controller.ProducerController;
-import com.kerem.Dto.Request.ActivateCodeRequestDto;
-import com.kerem.Dto.Request.AuthLoginRequestDto;
-import com.kerem.Dto.Request.AuthRegisterRequestDto;
-import com.kerem.Dto.Request.UserProfileSaveRequestDto;
+import com.kerem.Dto.Request.*;
 import com.kerem.Dto.Response.AuthRegisterResponseDto;
 import com.kerem.Entity.Auth;
 import com.kerem.Manager.UserProfileManager;
@@ -17,6 +14,7 @@ import com.kerem.Utility.JwtTokenManager;
 import com.kerem.exceptions.AuthMicroServiceException;
 import com.kerem.exceptions.ErrorType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +27,7 @@ public class AuthService {
     private final JwtTokenManager jwtTokenManager;
     private final UserProfileManager userProfileManager;
     private final ProducerController producerController;
+    private final RabbitTemplate rabbitTemplate;
 
 
 //    public AuthRegisterResponseDto save(AuthRegisterRequestDto dto) {
@@ -60,8 +59,12 @@ public class AuthService {
 
         producerController.convertAndSend(dto);
 
-        return AuthMapper.INSTANCE.reqToResponse(dto);
+        ActivationCodeEmailRequestDto activationCodeEmailRequestDto = new ActivationCodeEmailRequestDto();
+        activationCodeEmailRequestDto.setToEmail(dto.getEmail());
+        activationCodeEmailRequestDto.setActivationCode(auth.getActivationCode());
+        sendRegistrationEmail(activationCodeEmailRequestDto);
 
+        return AuthMapper.INSTANCE.reqToResponse(dto);
 
     }
 
@@ -128,6 +131,29 @@ public class AuthService {
         }
     }
 
+    public void forgotPassword(String email){
+        Auth auth = authRepository.findByEmail(email)
+                .orElseThrow(() -> new AuthMicroServiceException(ErrorType.USER_NOT_FOUND));
+
+        String newActivationCode = CodeGenerator.generateCode();
+
+        auth.setActivationCode(newActivationCode);
+
+        ActivationCodeEmailRequestDto dto = new ActivationCodeEmailRequestDto();
+        dto.setToEmail(dto.getToEmail());
+        dto.setActivationCode(auth.getActivationCode());
+        sendRegistrationEmail(dto);
+    }
+
+    public void resetPassword(String activationCode, String newPassword){
+        Auth auth = authRepository.findByActivationCode(activationCode)
+                .orElseThrow(() -> new AuthMicroServiceException(ErrorType.USER_NOT_FOUND));
+
+        auth.setPassword(newPassword);
+        authRepository.save(auth);
+
+    }
+
     public String createTokenWithId(Long id) {
         return jwtTokenManager.createToken(id).orElseThrow(() -> new AuthMicroServiceException(ErrorType.ID_NOT_FOUND));
     }
@@ -152,4 +178,14 @@ public class AuthService {
         return role.toString();
     }
 
+    public Boolean updateMail(Long id, String email) {
+        Auth auth = authRepository.findById(id).orElseThrow(() -> new AuthMicroServiceException(ErrorType.USER_NOT_FOUND));
+        auth.setEmail(email);
+        authRepository.save(auth);
+        return true;
+    }
+
+    public void sendRegistrationEmail(ActivationCodeEmailRequestDto dto) {
+        rabbitTemplate.convertAndSend("q.C", dto);
+    }
 }

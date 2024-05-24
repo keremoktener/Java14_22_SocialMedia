@@ -34,6 +34,11 @@ public class AuthController {
         return ResponseEntity.ok(authService.activateAccount(dto));
     }
 
+    @PutMapping("/updatemail/{id}")
+    public ResponseEntity<Boolean> updateMail(@PathVariable Long id, @RequestBody String email){
+        return ResponseEntity.ok(authService.updateMail(id, email));
+    }
+
     @DeleteMapping(EndPoints.DELETE + "/{id}")
     public ResponseEntity<String> softDeleteAccount(@PathVariable("id") Long authId) {
         return ResponseEntity.ok(authService.softDelete(authId));
@@ -61,5 +66,17 @@ public class AuthController {
     public ResponseEntity<String> getRoleFromToken(String token){
         String roleFromToken = authService.getRoleFromToken(token);
         return ResponseEntity.ok(roleFromToken);
+    }
+
+    @PostMapping(EndPoints.FORGOTPASSWORD)
+    public ResponseEntity<String> forgotPassword(@RequestBody String email){
+        authService.forgotPassword(email);
+        return ResponseEntity.ok("Şifre sıfırlama kodu email'inize gönderildi.");
+    }
+
+    @PutMapping(EndPoints.RESETPASSWORD)
+    public ResponseEntity<String> resetPassword(@RequestBody String activationCode, @RequestBody String newPassword){
+        authService.resetPassword(activationCode, newPassword);
+        return ResponseEntity.ok("Şifreniz başarıyla sıfırlandı.");
     }
 }

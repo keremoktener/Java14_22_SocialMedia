@@ -5,4 +5,6 @@ include 'ConfigServer'
 include 'ConfigServer'
 include 'ConfigServerGit'
 include 'PostService'
+include 'EmailMicroService'
+include 'deneme'
 

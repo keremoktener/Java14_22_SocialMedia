@@ -12,8 +12,10 @@
             <option value="$PROJECT_DIR$/AuthService" />
             <option value="$PROJECT_DIR$/ConfigServer" />
             <option value="$PROJECT_DIR$/ConfigServerGit" />
+            <option value="$PROJECT_DIR$/EmailMicroService" />
             <option value="$PROJECT_DIR$/PostService" />
             <option value="$PROJECT_DIR$/UserProfileService" />
+            <option value="$PROJECT_DIR$/deneme" />
           </set>
         </option>
       </GradleProjectSettings>
