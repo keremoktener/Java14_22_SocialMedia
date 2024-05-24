@@ -29,6 +29,11 @@ public class RabbitMQConfig {
         return new Queue("q.C");
     }
 
+    @Bean
+    Queue forgotPasswordQueue(){
+        return new Queue("forgotPassword.Queue");
+    }
+
     // 2.adım: Exchange oluşturulması
     @Bean
     DirectExchange exchange() {
@@ -58,6 +63,14 @@ public class RabbitMQConfig {
                 .bind(queueC)
                 .to(exchange)
                 .with("routing.C");
+    }
+
+    @Bean
+    Binding bindingD(Queue forgotPasswordQueue, DirectExchange exchange) {
+        return BindingBuilder
+                .bind(forgotPasswordQueue)
+                .to(exchange)
+                .with("forgotPasswordRoute");
     }
 
     // 4.adım: Nesne - JSON dönüşümü için Converter'ın tanımlanması

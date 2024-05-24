@@ -16,4 +16,9 @@ public class EmailConsumer {
     public void receiveRegistrationEmail(ActivationCodeEmailRequestDto dto) {
         emailService.sendActivationCode(dto.getToEmail(), dto.getActivationCode());
     }
+
+    @RabbitListener(queues = "forgotPassword.Queue")
+    public void sendActivationCodeForgotPassword(ActivationCodeEmailRequestDto dto) {
+        emailService.sendActivationCode(dto.getToEmail(), dto.getActivationCode());
+    }
 }

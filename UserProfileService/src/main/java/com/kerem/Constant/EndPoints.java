@@ -28,4 +28,6 @@ public class EndPoints {
     public static final String ACTIVATE = "/activate";
     public static final String FINDIDBYAUTHID = "/findidbyauthid";
 
+    public static final String FINDBYUSERNAMEREDIS = "/findbyusernameredis";
+    public static final String FINDBYSTATUS = "/findbystatus";
 }

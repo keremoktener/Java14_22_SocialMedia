@@ -9,12 +9,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Encrypted;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.io.Serializable;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
-@Document
-public class UserProfile {
+@Document(collection = "userProfile")
+public class UserProfile implements Serializable{
     @MongoId
     String id;
     Long authId;

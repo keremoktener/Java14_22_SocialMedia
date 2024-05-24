@@ -3,4 +3,5 @@ dependencies {
     implementation libs.springCloudClient
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation libs.springCloudOpenFeign
+    implementation libs.springBootRedis
 }

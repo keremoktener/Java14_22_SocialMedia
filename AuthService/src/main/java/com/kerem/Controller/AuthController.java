@@ -69,14 +69,15 @@ public class AuthController {
     }
 
     @PostMapping(EndPoints.FORGOTPASSWORD)
-    public ResponseEntity<String> forgotPassword(@RequestBody String email){
+    public ResponseEntity<String> forgotPassword(@RequestParam String email){
         authService.forgotPassword(email);
         return ResponseEntity.ok("Şifre sıfırlama kodu email'inize gönderildi.");
     }
 
     @PutMapping(EndPoints.RESETPASSWORD)
-    public ResponseEntity<String> resetPassword(@RequestBody String activationCode, @RequestBody String newPassword){
+    public ResponseEntity<String> resetPassword(@RequestParam String activationCode, @RequestParam String newPassword){
         authService.resetPassword(activationCode, newPassword);
         return ResponseEntity.ok("Şifreniz başarıyla sıfırlandı.");
     }
+
 }

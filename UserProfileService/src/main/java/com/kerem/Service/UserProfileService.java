@@ -17,9 +17,12 @@ import com.kerem.exceptions.ErrorType;
 import com.kerem.exceptions.UserProfileMicroServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,6 +31,9 @@ public class UserProfileService {
     private final UserProfileRepository userProfileRepository;
     private final JwtTokenManager jwtTokenManager;
     private final AuthManager authManager;
+    private final RedisTemplate<String, UserProfile> redisTemplate;
+
+    private static final String KEY = "UserProfile";
 
 //    public void save(UserProfileSaveRequestDto dto){
 //
@@ -78,6 +84,17 @@ public class UserProfileService {
             UserProfile userProfile = byAuthId.get();
             return userProfile.getId();
         }
+    }
+
+    @Cacheable(value = "UserProfile", key = "#username")
+    public UserProfile findByUsername(String username){
+        return userProfileRepository.findByUsername(username).orElseThrow(() -> new UserProfileMicroServiceException(ErrorType.KULLANICI_NOT_FOUND));
+    }
+
+
+    @Cacheable(value = "UserProfile", key = "#status")
+    public List<UserProfile> findByStatus(Status status){
+        return userProfileRepository.findByStatus(status).orElseThrow(() -> new UserProfileMicroServiceException(ErrorType.KULLANICI_NOT_FOUND));
     }
 
 }

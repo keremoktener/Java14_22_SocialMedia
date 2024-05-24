@@ -138,11 +138,12 @@ public class AuthService {
         String newActivationCode = CodeGenerator.generateCode();
 
         auth.setActivationCode(newActivationCode);
+        authRepository.save(auth);
 
         ActivationCodeEmailRequestDto dto = new ActivationCodeEmailRequestDto();
-        dto.setToEmail(dto.getToEmail());
+        dto.setToEmail(auth.getEmail());
         dto.setActivationCode(auth.getActivationCode());
-        sendRegistrationEmail(dto);
+        sendActivationCodeForgotPassword(dto);
     }
 
     public void resetPassword(String activationCode, String newPassword){
@@ -151,7 +152,6 @@ public class AuthService {
 
         auth.setPassword(newPassword);
         authRepository.save(auth);
-
     }
 
     public String createTokenWithId(Long id) {
@@ -187,5 +187,9 @@ public class AuthService {
 
     public void sendRegistrationEmail(ActivationCodeEmailRequestDto dto) {
         rabbitTemplate.convertAndSend("q.C", dto);
+    }
+
+    public void sendActivationCodeForgotPassword(ActivationCodeEmailRequestDto dto){
+        rabbitTemplate.convertAndSend("forgotPassword.Queue", dto);
     }
 }
